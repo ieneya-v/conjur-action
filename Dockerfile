@@ -4,7 +4,8 @@ FROM alpine:3.19
 RUN apk add --no-cache \
   bash=5.2.21-r0 \
   curl=8.12.1-r0 \
-  jq=1.7.1-r0
+  jq=1.7.1-r0 \
+  su-exec
  
 # Create a non-root user and group
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
