@@ -20,7 +20,7 @@ RUN chown -R appuser:appgroup /conjur-action
 RUN chmod +x /conjur-action/entrypoint.sh
  
 RUN chown -R appuser:appgroup /github/file_commands /github
-RUN chmod -R 755 /github/file_command /github
+RUN chmod -R 755 /github/file_commands /github
  
 WORKDIR /conjur-action
  
