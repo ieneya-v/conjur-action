@@ -9,7 +9,7 @@ RUN apk add --no-cache \
 # Create a non-root user and group
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
  
-RUN mkdir -p /conjur-action /github/file_commands /github
+RUN mkdir -p /conjur-action
  
 COPY entrypoint.sh /conjur-action/entrypoint.sh
  
@@ -19,12 +19,12 @@ RUN chown -R appuser:appgroup /conjur-action
  
 RUN chmod +x /conjur-action/entrypoint.sh
  
-RUN chown -R appuser:appgroup /github/file_commands /github
-RUN chmod -R 755 /github/file_commands /github
+# RUN chown -R appuser:appgroup /github/file_commands /github
+# RUN chmod -R 755 /github/file_commands /github
  
 WORKDIR /conjur-action
  
-USER appuser
+# USER appuser
  
 #  Add HEALTHCHECK
 HEALTHCHECK CMD curl --fail http://localhost:3000 || exit
