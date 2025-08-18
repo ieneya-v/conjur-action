@@ -24,7 +24,7 @@ RUN chmod -R 755 /github/file_commands
  
 WORKDIR /conjur-action
  
-USER appuser
+# USER appuser
  
 #  Add HEALTHCHECK
 HEALTHCHECK CMD curl --fail http://localhost:3000 || exit
