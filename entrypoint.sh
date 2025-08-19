@@ -2,7 +2,7 @@
 # Conjur Secret Retrieval for GitHub Action conjur-action
 
 #Fix permission
-[ -d /github ] && sudo chown -R "$USER:$USER" /github || true
+[ -d /github ] && sudo chown -R "$USER:$GROUP" /github || true
 
 script_dir=$(dirname "$(realpath "$0")")
 
