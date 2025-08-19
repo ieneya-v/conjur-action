@@ -7,23 +7,25 @@ RUN apk add --no-cache \
   sudo
 
 ARG USER=appuser
+ARG GROUP=appgroup
 ENV HOME=/home/$USER
 
 # Create non-root user and set up sudo permissions
-RUN adduser -D $USER && \
+RUN addgroup -S $GROUP && \
+    adduser -D -S -G $GROUP $USER && \
     echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER && \
     chmod 0440 /etc/sudoers.d/$USER
 
-RUN mkdir -p /conjur-action && \
-    chown -R $USER:$USER /conjur-action
+RUN mkdir -p /conjur-action
 
 COPY entrypoint.sh /conjur-action/entrypoint.sh
 COPY CHANGELOG.md /conjur-action/CHANGELOG.md
 
 RUN chmod +x /conjur-action/entrypoint.sh && \
-    chown -R $USER:$USER /conjur-action
+    chown -R $USER:$GROUP /conjur-action
 
 WORKDIR /conjur-action
+
 USER $USER
 
 HEALTHCHECK CMD curl --fail http://localhost:3000 || exit
