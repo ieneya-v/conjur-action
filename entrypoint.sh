@@ -1,11 +1,8 @@
 #!/bin/bash
 # Conjur Secret Retrieval for GitHub Action conjur-action
 
-# Fix permissions
-chown -R appuser:appgroup /github/file_commands /github/home /github/workflow 2>/dev/null
-
-# Switch to appuser
-exec su-exec appuser "$0" "$@"
+#Fix permission
+[ -d /github ] && sudo chown -R "$USER:$USER" /github || true
 
 script_dir=$(dirname "$(realpath "$0")")
 

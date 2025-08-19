@@ -1,33 +1,31 @@
 FROM alpine:3.19
- 
-# Make sure to have the appropriate version based on base image (alpine:3.19)
+
 RUN apk add --no-cache \
   bash=5.2.21-r0 \
   curl=8.12.1-r0 \
   jq=1.7.1-r0 \
-  su-exec
- 
-# Create a non-root user and group
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
- 
-RUN mkdir -p /conjur-action
- 
+  sudo
+
+ARG USER=appuser
+ENV HOME=/home/$USER
+
+# Create non-root user and set up sudo permissions
+RUN adduser -D $USER && \
+    echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER && \
+    chmod 0440 /etc/sudoers.d/$USER
+
+RUN mkdir -p /conjur-action && \
+    chown -R $USER:$USER /conjur-action
+
 COPY entrypoint.sh /conjur-action/entrypoint.sh
- 
 COPY CHANGELOG.md /conjur-action/CHANGELOG.md
- 
-RUN chown -R appuser:appgroup /conjur-action
- 
-RUN chmod +x /conjur-action/entrypoint.sh
- 
-# RUN chown -R appuser:appgroup /github/file_commands /github
-# RUN chmod -R 755 /github/file_commands /github
- 
+
+RUN chmod +x /conjur-action/entrypoint.sh && \
+    chown -R $USER:$USER /conjur-action
+
 WORKDIR /conjur-action
- 
-# USER appuser
- 
-#  Add HEALTHCHECK
+USER $USER
+
 HEALTHCHECK CMD curl --fail http://localhost:3000 || exit
- 
+
 ENTRYPOINT ["/conjur-action/entrypoint.sh"]
