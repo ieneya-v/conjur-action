@@ -1,9 +1,10 @@
-FROM nginx:1.29.1-alpine
+FROM nginx:1.28
 
-RUN apk add --no-cache \
-    openssl \
-    iputils \
-    procps
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends iputils-ping procps openssl && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /etc/nginx/
 
