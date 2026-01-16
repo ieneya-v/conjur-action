@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine:3.23.2
 
 # Make sure to have the appropriate version based on base image (alpine:3.19)
 RUN apk add --no-cache \
